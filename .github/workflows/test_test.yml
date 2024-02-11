@@ -167,6 +167,7 @@ jobs:
           Rscript -e "devtools::install_github('cboettig/minioclient'); library(minioclient); install_mc()"
       - name: Run the test
         run: |
+          git --version
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test[['register_workflow']](); test[['invoke_workflow']]()"
           sleep 120
       - name: Check the result
