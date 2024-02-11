@@ -75,6 +75,9 @@ jobs:
           
       - name: Replace letters for openwhisk
         run: |
+          echo $GH_USE
+          echo $LD_USE
+          echo $OW_USE
           if [[ $GH_USE == "true" ]]; then
             replace_function_1="GitHubActions"
             replace_container_1="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
