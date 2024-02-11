@@ -75,7 +75,7 @@
         "final": "faasr_test_container_2"
     },
     "FunctionGitRepo": {
-        "test_function": "git_hub_name"
+        "test_function": "$git_hub_name"
     },
     "FunctionCRANPackage": {
         "test_function": "rMR"
