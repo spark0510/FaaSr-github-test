@@ -32,47 +32,47 @@ jobs:
         run: |
           if [ github.event.inputs.Github_Actions ]; then
             replace_function_1="GitHubActions"
-            replace_container_1=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             if [ github.event.inputs.OpenWhisk ]; then
               replace_function_2="OpenWhisk"
-              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               if [ github.event.inputs.Lambda ]; then
                 replace_function_3="Lambda"
-                replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+                replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               else 
                 replace_function_3="GitHubActions"
-                replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+                replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               fi
             elif [ github.event.inputs.Lambda ]; then
               replace_function_2="Lambda"
-              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
-              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="GitHubActions"
-              replace_container_2=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
-              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
           elif [ github.event.inputs.OpenWhisk ]; then
             replace_function_1="OpenWhisk"
-            replace_container_1=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="OpenWhisk"
-            replace_container_3=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_3="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             if [ github.event.inputs.Lambda ]; then
               replace_function_2="Lambda"
-              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="OpenWhisk"
-              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
           elif [ github.event.inputs.Lambda ]; then
             replace_function_1="Lambda"
-            replace_container_1=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_2="Lambda"
-            replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="Lambda"
-            replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
 
           function_1="faasr_test_function_1"
           function_2="faasr_test_function_2"
