@@ -28,7 +28,7 @@
     "FunctionList": {
         "start": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_1",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": [
                 "test1",
                 "test2",
@@ -37,45 +37,45 @@
         },
         "test1": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_1",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": "test4"
         },
         "test2": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_2",
+            "FaaSServer": "OpenWhisk",
             "InvokeNext": "test5"
         },
         "test3": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_3",
+            "FaaSServer": "Lambda",
             "InvokeNext": "final"
         },
         "test4": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_1",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": "final"
         },
         "test5": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_3",
+            "FaaSServer": "Lambda",
             "InvokeNext": "final"
         },
         "final": {
             "FunctionName": "test_function",
-            "FaaSServer": "faasr_test_function_2"
+            "FaaSServer": "OpenWhisk"
         }
     },
     "ActionContainers": {
-        "start": "faasr_test_container_1",
-        "test1": "faasr_test_container_1",
-        "test2": "faasr_test_container_2",
-        "test3": "faasr_test_container_3",
-        "test4": "faasr_test_container_1",
-        "test5": "faasr_test_container_3",
-        "final": "faasr_test_container_2"
+        "start": "ghcr.io/faasr/github-actions-tidyverse:1.0.9.0-dev",
+        "test1": "ghcr.io/faasr/github-actions-tidyverse:1.0.9.0-dev",
+        "test2": "spark77/openwhisk-tidyverse:1.0.9.0-dev",
+        "test3": "/aws-lambda-tidyverse:1.0.9.0-dev",
+        "test4": "ghcr.io/faasr/github-actions-tidyverse:1.0.9.0-dev",
+        "test5": "/aws-lambda-tidyverse:1.0.9.0-dev",
+        "final": "spark77/openwhisk-tidyverse:1.0.9.0-dev"
     },
     "FunctionGitRepo": {
-        "test_function": "$git_hub_name"
+        "test_function": "$FaaSr-github-test"
     },
     "FunctionCRANPackage": {
         "test_function": "rMR"
