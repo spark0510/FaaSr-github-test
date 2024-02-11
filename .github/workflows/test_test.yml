@@ -126,16 +126,16 @@ jobs:
           container_3="faasr_test_container_3"
 
           sed "s|$function_1|$replace_function_1|g" payload.json > payload_new.json
-          sed "s|$function_2|$replace_function_2|g" payload.json > payload_new.json
-          sed "s|$function_3|$replace_function_3|g" payload.json > payload_new.json
+          sed "s|$function_2|$replace_function_2|g" payload.json >> payload_new.json
+          sed "s|$function_3|$replace_function_3|g" payload.json >> payload_new.json
 
-          sed "s|$container_1|$replace_container_1|g" payload.json > payload_new.json
-          sed "s|$container_2|$replace_container_2|g" payload.json > payload_new.json
-          sed "s|$container_3|$replace_container_3|g" payload.json > payload_new.json
+          sed "s|$container_1|$replace_container_1|g" payload.json >> payload_new.json
+          sed "s|$container_2|$replace_container_2|g" payload.json >> payload_new.json
+          sed "s|$container_3|$replace_container_3|g" payload.json >> payload_new.json
 
           git_hub_name="{{ github.event.repository.name }}"
 
-          sed "s|git_hub_name|$git_hub_name|g" payload.json > payload_new.json
+          sed "s|git_hub_name|$git_hub_name|g" payload.json >> payload_new.json
 
       - name: Commit changes
         run: |
