@@ -73,6 +73,7 @@ jobs:
             replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="Lambda"
             replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
+          fi
 
           function_1="faasr_test_function_1"
           function_2="faasr_test_function_2"
