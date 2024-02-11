@@ -28,7 +28,7 @@
     "FunctionList": {
         "start": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": [
                 "test1",
                 "test2",
@@ -37,42 +37,42 @@
         },
         "test1": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": "test4"
         },
         "test2": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "OpenWhisk",
             "InvokeNext": "test5"
         },
         "test3": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "Lambda",
             "InvokeNext": "final"
         },
         "test4": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "GitHubActions",
             "InvokeNext": "final"
         },
         "test5": {
             "FunctionName": "test_function",
-            "FaaSServer": "",
+            "FaaSServer": "Lambda",
             "InvokeNext": "final"
         },
         "final": {
             "FunctionName": "test_function",
-            "FaaSServer": ""
+            "FaaSServer": "OpenWhisk"
         }
     },
     "ActionContainers": {
-        "start": "",
-        "test1": "",
-        "test2": "",
-        "test3": "",
-        "test4": "",
-        "test5": "",
-        "final": ""
+        "start": "ghcr.io/spark0510/github-actions-tidyverse:1.0.9.0-dev",
+        "test1": "ghcr.io/spark0510/github-actions-tidyverse:1.0.9.0-dev",
+        "test2": "spark77/openwhisk-tidyverse:1.0.9.0-dev",
+        "test3": "113271589043.dkr.ecr.us-east-1.amazonaws.com/aws-lambda-tidyverse:1.0.9.0-dev",
+        "test4": "ghcr.io/spark0510/github-actions-tidyverse:1.0.9.0-dev",
+        "test5": "113271589043.dkr.ecr.us-east-1.amazonaws.com/aws-lambda-tidyverse:1.0.9.0-dev",
+        "final": "spark77/openwhisk-tidyverse:1.0.9.0-dev"
     },
     "FunctionGitRepo": {
         "test_function": "FaaSr-github-test"
