@@ -1,0 +1,96 @@
+name: Build and push Docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      Github_Actions:
+        type: boolean
+        description: Test Github Actions
+      OpenWhisk:
+        type: boolean
+        description: Test OpenWhisk
+      Lambda:
+        type: boolean
+        description: Test Lambda
+
+env:
+  TIDYVERSE_VERSION: 4.3.1
+  FAASR_VERSION: 1.0.9.0
+  FAASR_TAG: 1.0.9.0
+  FAASR_INSTALL_REPO: FaaSr/FaaSr-package
+  GHCR_IO_REPO: faasr
+  TAG_SUFFIX: dev
+  AWS_REGION: us-east-1
+
+permissions: write-all
+
+jobs:
+  get_payload:
+    runs-on: ubuntu-latest
+      steps:
+      - name: Replace letters for openwhisk
+        run: |
+          if [ github.event.inputs.Github_Actions ]; then
+            replace_function_1="GitHubActions"
+            replace_container_1=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            if [ github.event.inputs.OpenWhisk ]; then
+              replace_function_2="OpenWhisk"
+              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              if [ github.event.inputs.Lambda ]; then
+                replace_function_3="Lambda"
+                replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              else 
+                replace_function_3="GitHubActions"
+                replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            elif [ github.event.inputs.Lambda ]; then
+              replace_function_2="Lambda"
+              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_function_3="GitHubActions"
+              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            else 
+              replace_function_2="GitHubActions"
+              replace_container_2=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_function_3="GitHubActions"
+              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+          elif [ github.event.inputs.OpenWhisk ]; then
+            replace_function_1="OpenWhisk"
+            replace_container_1=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_function_3="OpenWhisk"
+            replace_container_3=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            if [ github.event.inputs.Lambda ]; then
+              replace_function_2="Lambda"
+              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            else 
+              replace_function_2="OpenWhisk"
+              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+          elif [ github.event.inputs.Lambda ]; then
+            replace_function_1="Lambda"
+            replace_container_1=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_function_2="Lambda"
+            replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_function_3="Lambda"
+            replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+
+          function_1="faasr_test_function_1"
+          function_2="faasr_test_function_2"
+          function_3="faasr_test_function_3"
+          
+          container_1="faasr_test_container_1"
+          container_2="faasr_test_container_2"
+          container_3="faasr_test_container_3"
+
+          sed -i 's/$function_1/$replace_function_1/g' payload.json
+          sed -i 's/$function_2/$replace_function_2/g' payload.json
+          sed -i 's/$function_3/$replace_function_3/g' payload.json
+
+          sed -i 's/$container_1/$replace_container_1/g' payload.json
+          sed -i 's/$container_2/$replace_container_2/g' payload.json
+          sed -i 's/$container_3/$replace_container_3/g' payload.json
+
+          git_hub_name = ${{ GITHUB_REPOSITORY }}
+
+          sed -i 's/git_hub_name/$git_hub_name/g' payload.json
+
+          cat payload.json
+          
+
