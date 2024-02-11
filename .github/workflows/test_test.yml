@@ -21,6 +21,9 @@ env:
   GHCR_IO_REPO: spark0510
   TAG_SUFFIX: dev
   AWS_REGION: us-east-1
+  GH_USE: ${{ github.event.inputs.Github_Actions }}
+  OW_USE: ${{ github.event.inputs.OpenWhisk }}
+  LD_USE: ${{ github.event.inputs.Lambda }}
 
 permissions: write-all
 
@@ -72,20 +75,20 @@ jobs:
           
       - name: Replace letters for openwhisk
         run: |
-          if [ github.event.inputs.Github_Actions == "true" ]; then
+          if [ $GH_USE ]; then
             replace_function_1="GitHubActions"
             replace_container_1="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-            if [ github.event.inputs.OpenWhisk == "true" ]; then
+            if [ $OW_USE ]; then
               replace_function_2="OpenWhisk"
               replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-              if [ github.event.inputs.Lambda == "true" ]; then
+              if [ $LD_USE ]; then
                 replace_function_3="Lambda"
                 replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               else 
                 replace_function_3="GitHubActions"
                 replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               fi
-            elif [ github.event.inputs.Lambda == "true" ]; then
+            elif [ $LD_USE ]; then
               replace_function_2="Lambda"
               replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
@@ -96,19 +99,19 @@ jobs:
               replace_function_3="GitHubActions"
               replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
-          elif [ github.event.inputs.OpenWhisk == "true" ]; then
+          elif [ $OW_USE ]; then
             replace_function_1="OpenWhisk"
             replace_container_1="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="OpenWhisk"
             replace_container_3="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-            if [ github.event.inputs.Lambda == "true" ]; then
+            if [ $LD_USE ]; then
               replace_function_2="Lambda"
               replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="OpenWhisk"
               replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
-          elif [ github.event.inputs.Lambda == "true" ]; then
+          elif [ $LD_USE ]; then
             replace_function_1="Lambda"
             replace_container_1="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_2="Lambda"
