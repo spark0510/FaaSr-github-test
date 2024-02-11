@@ -75,20 +75,20 @@ jobs:
           
       - name: Replace letters for openwhisk
         run: |
-          if [ $GH_USE ]; then
+          if [[ $GH_USE == "true" ]]; then
             replace_function_1="GitHubActions"
             replace_container_1="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-            if [ $OW_USE ]; then
+            if [[ $OW_USE ]]; then
               replace_function_2="OpenWhisk"
               replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-              if [ $LD_USE ]; then
+              if [[ $LD_USE ]]; then
                 replace_function_3="Lambda"
                 replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               else 
                 replace_function_3="GitHubActions"
                 replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               fi
-            elif [ $LD_USE ]; then
+            elif [[ $LD_USE ]]; then
               replace_function_2="Lambda"
               replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
@@ -99,19 +99,19 @@ jobs:
               replace_function_3="GitHubActions"
               replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
-          elif [ $OW_USE ]; then
+          elif [[ $OW_USE ]]; then
             replace_function_1="OpenWhisk"
             replace_container_1="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="OpenWhisk"
             replace_container_3="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
-            if [ $LD_USE ]; then
+            if [[ $LD_USE ]]; then
               replace_function_2="Lambda"
               replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="OpenWhisk"
               replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
-          elif [ $LD_USE ]; then
+          elif [[ $LD_USE ]]; then
             replace_function_1="Lambda"
             replace_container_1="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_2="Lambda"
@@ -137,7 +137,7 @@ jobs:
           sed -i "s|$container_2|$replace_container_2|g" payload_new.json
           sed -i "s|$container_3|$replace_container_3|g" payload_new.json
 
-          git_hub_name="${{ github.event.repository.name }}"
+          git_hub_name="$GITHUB_REPOSITORY"
 
           sed -i "s|git_hub_name|$git_hub_name|g" payload_new.json
 
