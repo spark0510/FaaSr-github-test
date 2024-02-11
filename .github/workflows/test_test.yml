@@ -125,7 +125,8 @@ jobs:
           container_2="faasr_test_container_2"
           container_3="faasr_test_container_3"
 
-          sed "s|$function_1|$replace_function_1|g" payload.json > payload_new.json
+          cp payload.json payload_new.json
+          sed "s|$function_1|$replace_function_1|g" payload_new.json > payload_new.json
           sed "s|$function_2|$replace_function_2|g" payload_new.json > payload_new.json
           sed "s|$function_3|$replace_function_3|g" payload_new.json > payload_new.json
 
