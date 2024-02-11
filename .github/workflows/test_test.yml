@@ -93,7 +93,7 @@ jobs:
           sed -i 's/$container_2/$replace_container_2/g' payload.json
           sed -i 's/$container_3/$replace_container_3/g' payload.json
 
-          git_hub_name = "${{ github.event.repository.name }}"
+          git_hub_name="${{ github.event.repository.name }}"
 
           sed -i 's/git_hub_name/$git_hub_name/g' payload.json
 
