@@ -75,7 +75,7 @@
         "final": "spark77/openwhisk-tidyverse:1.0.9.0-dev"
     },
     "FunctionGitRepo": {
-        "test_function": "FaaSr-github-test"
+        "test_function": "spark0510/FaaSr-github-test"
     },
     "FunctionCRANPackage": {
         "test_function": "rMR"
