@@ -81,7 +81,7 @@ jobs:
   get_payload:
  #   needs: build-and-push
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - name: Replace letters for openwhisk
         run: |
           if [ github.event.inputs.Github_Actions ]; then
@@ -148,5 +148,5 @@ jobs:
           sed -i 's/git_hub_name/$git_hub_name/g' payload.json
 
           cat payload.json
-          
+
 
