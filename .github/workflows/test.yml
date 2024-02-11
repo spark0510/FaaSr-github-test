@@ -25,110 +25,104 @@ env:
 permissions: write-all
 
 jobs:
-  # build-and-push:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #       with:
-  #         ref: new-test
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-  #     - name: Login to the Github Container registry
-  #       uses: docker/login-action@v2
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ env.GHCR_IO_REPO }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ${{ env.AWS_REGION }}
-  #     - name: Login to Amazon ECR
-  #       id: login-ecr
-  #       uses: aws-actions/amazon-ecr-login@v2
-  #     - name: Build openwhisk-tidyverse Docker image
-  #       run: |
-  #         cd openwhisk
-  #         mv Dockerfile-tidyverse Dockerfile
-  #         docker build -t openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
-  #     - name: Push openwhisk-tidyverse Docker image
-  #       run: |
-  #         docker tag openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} ${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-  #         docker push ${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-  #     - name: Build github-actions-tidyverse Container registry image
-  #       run: |
-  #         cd github-actions
-  #         mv Dockerfile-tidyverse Dockerfile
-  #         docker build -t ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
-  #     - name: Push github-actions-tidyverse Container registry image
-  #       run: |
-  #         docker tag ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} ghcr.io/${{ github.actor }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-  #         docker push ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-  #     - name: Build aws-lambda-tidyverse Container image
-  #       run: |
-  #         cd aws-lambda
-  #         mv Dockerfile-tidyverse Dockerfile
-  #         docker build -t ${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
-  #     - name: Push aws-lambda-tidyverse Container image
-  #       run: |
-  #         docker push ${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-  get_payload:
- #   needs: build-and-push
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to the Github Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ env.GHCR_IO_REPO }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build openwhisk-tidyverse Docker image
+        run: |
+          cd openwhisk
+          mv Dockerfile-tidyverse Dockerfile
+          docker build -t openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
+      - name: Push openwhisk-tidyverse Docker image
+        run: |
+          docker tag openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} ${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+      - name: Build github-actions-tidyverse Container registry image
+        run: |
+          cd github-actions
+          mv Dockerfile-tidyverse Dockerfile
+          docker build -t ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
+      - name: Push github-actions-tidyverse Container registry image
+        run: |
+          docker tag ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} ghcr.io/${{ github.actor }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+          docker push ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+      - name: Build aws-lambda-tidyverse Container image
+        run: |
+          cd aws-lambda
+          mv Dockerfile-tidyverse Dockerfile
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_VERSION=${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }} --build-arg FAASR_TAG=${{ env.FAASR_TAG }} --build-arg FAASR_INSTALL_REPO=${{ env.FAASR_INSTALL_REPO }} .
+      - name: Push aws-lambda-tidyverse Container image
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
       - name: Replace letters for openwhisk
         run: |
           if [ github.event.inputs.Github_Actions ]; then
             replace_function_1="GitHubActions"
-            replace_container_1=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             if [ github.event.inputs.OpenWhisk ]; then
               replace_function_2="OpenWhisk"
-              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               if [ github.event.inputs.Lambda ]; then
                 replace_function_3="Lambda"
-                replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+                replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               else 
                 replace_function_3="GitHubActions"
-                replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+                replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               fi
             elif [ github.event.inputs.Lambda ]; then
               replace_function_2="Lambda"
-              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
-              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="GitHubActions"
-              replace_container_2=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
               replace_function_3="GitHubActions"
-              replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_3="ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             fi
           elif [ github.event.inputs.OpenWhisk ]; then
             replace_function_1="OpenWhisk"
-            replace_container_1=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="OpenWhisk"
-            replace_container_3=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_3="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             if [ github.event.inputs.Lambda ]; then
               replace_function_2="Lambda"
-              replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             else 
               replace_function_2="OpenWhisk"
-              replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
-            fi          
+              replace_container_2="${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
+            fi
           elif [ github.event.inputs.Lambda ]; then
             replace_function_1="Lambda"
-            replace_container_1=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_1="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_2="Lambda"
-            replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_2="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
             replace_function_3="Lambda"
-            replace_container_3=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            replace_container_3="${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}"
+          fi
 
-          
           function_1="faasr_test_function_1"
           function_2="faasr_test_function_2"
           function_3="faasr_test_function_3"
@@ -137,19 +131,32 @@ jobs:
           container_2="faasr_test_container_2"
           container_3="faasr_test_container_3"
 
+          sed -i "s|$function_1|$replace_function_1|g" payload.json
+          sed -i "s|$function_2|$replace_function_2|g" payload.json
+          sed -i "s|$function_3|$replace_function_3|g" payload.json
 
-          sed -i 's/$function_1/$replace_function_1/g' payload.json
-          sed -i 's/$function_2/$replace_function_2/g' payload.json
-          sed -i 's/$function_3/$replace_function_3/g' payload.json
+          sed -i "s|$container_1|$replace_container_1|g" payload.json
+          sed -i "s|$container_2|$replace_container_2|g" payload.json
+          sed -i "s|$container_3|$replace_container_3|g" payload.json
 
-          sed -i 's/$container_1/$replace_container_1/g' payload.json
-          sed -i 's/$container_2/$replace_container_2/g' payload.json
-          sed -i 's/$container_3/$replace_container_3/g' payload.json
+          git_hub_name="{{ github.event.repository.name }}"
 
-          git_hub_name =${{ github.event.repository.name }}
-
-          sed -i 's/git_hub_name/$git_hub_name/g' payload.json
-
-          cat payload.json
+          sed -i "s|git_hub_name|$git_hub_name|g" payload.json
+      - name: Commit changes
+        run: |
+          echo "### git config ###"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "### git add ###"
+          git add .
+          echo "### git commit ###"
+          git commit -m "generated"
+          echo "### git push ###" 
+          git push          
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3          
 
 
