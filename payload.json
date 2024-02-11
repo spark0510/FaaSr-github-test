@@ -27,7 +27,7 @@
     },
     "FunctionList": {
         "start": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_1",
             "InvokeNext": [
                 "test1",
@@ -36,27 +36,27 @@
             ]
         },
         "test1": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_1",
             "InvokeNext": "test4"
         },
         "test2": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_2",
             "InvokeNext": "test5"
         },
         "test3": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_3",
             "InvokeNext": "final"
         },
         "test4": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_1",
             "InvokeNext": "final"
         },
         "test5": {
-            "FunctionName": "test_function",
+            "FunctionName": "null_function",
             "FaaSServer": "faasr_test_function_3",
             "InvokeNext": "final"
         },
@@ -75,17 +75,18 @@
         "final": "faasr_test_container_2"
     },
     "FunctionGitRepo": {
-        "test_function": "git_hub_name"
+        "test_function": "git_hub_name",
+        "null_function": "git_hub_name"
     },
     "FunctionCRANPackage": {
         "test_function": "rMR"
     },
     "FunctionGitHubPackage": {
-        "test_function": ""
+        "test_function": "cboettig/minioclient"
     },
     "FunctionInvoke": "start",
     "InvocationID": "",
-    "FaaSrLog": "FaaSrLog",
+    "FaaSrLog": "test",
     "LoggingDataStore": "My_Minio_Bucket",
     "DefaultDataStore": "My_Minio_Bucket"
 }

@@ -21,6 +21,7 @@ env:
   GHCR_IO_REPO: spark0510
   TAG_SUFFIX: dev
   AWS_REGION: us-east-1
+  SECRET_PAYLOAD: ${{ secrets.SECRET_PAYLOAD }}
   GH_USE: ${{ github.event.inputs.Github_Actions }}
   OW_USE: ${{ github.event.inputs.OpenWhisk }}
   LD_USE: ${{ github.event.inputs.Lambda }}
@@ -143,14 +144,28 @@ jobs:
 
       - name: Commit changes
         run: |
-          echo "### git config ###"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          echo "### git add ###"
           git add .
-          echo "### git commit ###"
           git commit -m "generated"
-          echo "### git push ###" 
           git push          
           
-
+  test-faasr:
+    needs: get_payload
+    runs-on: ubuntu-latest
+    container: faasr/base-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create env File
+        run: |
+          echo "$SECRET_PAYLOAD" > 'env'
+      - name: Install FaaSr package
+        run: |
+          Rscript -e "args <- commandArgs(trailingOnly=TRUE); library(devtools); install_github(paste0(args[1],'@',args[2]),force=TRUE); devtools::install_github('cboettig/minioclient'); library(minioclient); install_mc()" $FAASR_INSTALL_REPO $FAASR_TAG
+      - name: Run the test
+        run: |
+          Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test$register_workflow(); test$invoke_workflow()"
+          sleep 120
+      - name: Check the result
+          Rscript -e "mc_cat('play/faasr-test/test/test.txt')" >> $GITHUB_OUTPUT
