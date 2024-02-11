@@ -42,6 +42,7 @@ jobs:
               else 
                 replace_function_3="GitHubActions"
                 replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+              fi
             elif [ github.event.inputs.Lambda ]; then
               replace_function_2="Lambda"
               replace_container_2=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
@@ -52,6 +53,7 @@ jobs:
               replace_container_2=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
               replace_function_3="GitHubActions"
               replace_container_3=ghcr.io/${{ env.GHCR_IO_REPO }}/github-actions-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            fi
           elif [ github.event.inputs.OpenWhisk ]; then
             replace_function_1="OpenWhisk"
             replace_container_1=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
@@ -63,6 +65,7 @@ jobs:
             else 
               replace_function_2="OpenWhisk"
               replace_container_2=${{ secrets.DOCKERHUB_USERNAME }}/openwhisk-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
+            fi
           elif [ github.event.inputs.Lambda ]; then
             replace_function_1="Lambda"
             replace_container_1=${{ steps.login-ecr.outputs.registry }}/aws-lambda-tidyverse:${{ env.FAASR_VERSION }}-${{ env.TAG_SUFFIX }}
