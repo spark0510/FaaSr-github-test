@@ -28,6 +28,8 @@ jobs:
   get_payload:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Replace letters for openwhisk
         run: |
           if [ github.event.inputs.Github_Actions ]; then
