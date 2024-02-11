@@ -168,4 +168,5 @@ jobs:
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test$register_workflow(); test$invoke_workflow()"
           sleep 120
       - name: Check the result
+        run: |
           Rscript -e "mc_cat('play/faasr-test/test/test.txt')" >> $GITHUB_OUTPUT
