@@ -94,6 +94,16 @@ jobs:
 
           sed -i 's/git_hub_name/$git_hub_name/g' payload.json
 
-          cat payload.json
+      - name: Commit changes
+        run: |
+          echo "### git config ###"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "### git add ###"
+          git add .
+          echo "### git commit ###"
+          git commit -m "generated"
+          echo "### git push ###" 
+          git push          
           
 
