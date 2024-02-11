@@ -153,7 +153,7 @@ jobs:
   test-faasr:
     needs: get_payload
     runs-on: ubuntu-latest
-    container: spark0510/base-tidyverse:1.0.0.0-test
+    container: spark77/base-tidyverse:1.0.0.0-test
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
