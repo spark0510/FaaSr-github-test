@@ -22,6 +22,7 @@ env:
   TAG_SUFFIX: dev
   AWS_REGION: us-east-1
   SECRET_PAYLOAD: ${{ secrets.SECRET_PAYLOAD }}
+  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   GH_USE: ${{ github.event.inputs.Github_Actions }}
   OW_USE: ${{ github.event.inputs.OpenWhisk }}
   LD_USE: ${{ github.event.inputs.Lambda }}
@@ -162,7 +163,8 @@ jobs:
           echo "$SECRET_PAYLOAD" > "env"
       - name: Install FaaSr package
         run: |
-          Rscript -e "args <- commandArgs(trailingOnly=TRUE); library(devtools); install_github(paste0(args[1],'@',args[2]),force=TRUE); devtools::install_github('cboettig/minioclient'); library(minioclient); install_mc()" $FAASR_INSTALL_REPO $FAASR_TAG
+          Rscript -e "args <- commandArgs(trailingOnly=TRUE); library(devtools); install_github(paste0(args[1],'@',args[2]),force=TRUE)" $FAASR_INSTALL_REPO $FAASR_TAG 
+          Rscript -e "devtools::install_github('cboettig/minioclient'); library(minioclient); install_mc()"
       - name: Run the test
         run: |
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test$register_workflow(); test$invoke_workflow()"
