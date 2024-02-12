@@ -8,13 +8,13 @@
         },
         "My_IBM_Account": {
             "FaaSType": "OpenWhisk",
-            "Endpoint": "",
-            "Namespace": "",
-            "SSL": ""
+            "Endpoint": "YOUR_OW_ENDPOINT",
+            "Namespace": "YOUR_OW_NAMESPACE",
+            "SSL": "YOUR_OW_SSL_CHECK"
         },
         "My_AWS_Account": {
             "FaaSType": "Lambda",
-            "Region": ""
+            "Region": "YOUR_LAMBDA_REGION"
         }
     },
     "DataStores": {

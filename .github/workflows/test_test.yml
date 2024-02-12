@@ -171,4 +171,4 @@ jobs:
           sleep 120
       - name: Check the result
         run: |
-          Rscript -e "mc_cat('play/faasr-test/test/test.txt')" >> $GITHUB_OUTPUT
+          Rscript -e "minioclient::mc_cat('play/faasr-test/test/test.txt')" >> $GITHUB_OUTPUT
