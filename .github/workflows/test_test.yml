@@ -176,4 +176,4 @@ jobs:
       - name: Check the result
         run: |
           Rscript -e "minioclient::mc_cat('play/faasr-test/test/test.txt')"
-          mc rm play/faasr-test/test/test.txt
+          Rscript -e "minioclient::mc_rm('play/faasr-test/test/test.txt')"
