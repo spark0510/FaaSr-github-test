@@ -14,7 +14,7 @@
         },
         "My_AWS_Account": {
             "FaaSType": "Lambda",
-            "Region": "YOUR_LAMBDA_REGION"
+            "Region": "us-east-1"
         }
     },
     "DataStores": {
