@@ -168,7 +168,7 @@ jobs:
       - name: Run the test
         run: |
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test[['register_workflow']](); Sys.sleep(10); test[['invoke_workflow']]()"
-          sleep 200
+          sleep 300
       - name: Check the result
         run: |
-          Rscript -e "try(minioclient::mc_cat('play/faasr-test/test/test.txt'))" >> $GITHUB_OUTPUT
+          Rscript -e "minioclient::mc_cat('play/faasr-test/test/test.txt')" >> $GITHUB_OUTPUT
