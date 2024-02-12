@@ -154,15 +154,10 @@ jobs:
   test-faasr:
     needs: get_payload
     runs-on: ubuntu-latest
-    container: rocker/tidyverse
+    container: spark77/testt
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install git
-        run: |
-          add-apt-repository ppa:git-core/ppa
-          apt update
-          apt -y install git
       - name: Create env File
         run: |
           echo "$SECRET_PAYLOAD" > "env"
