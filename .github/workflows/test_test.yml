@@ -161,18 +161,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Create env File
         run: |
           echo "$SECRET_PAYLOAD" > "env"
+
       - name: Install FaaSr package
         run: |
           Rscript -e "args <- commandArgs(trailingOnly=TRUE); library(devtools); install_github(paste0(args[1],'@',args[2]),force=TRUE)" $FAASR_INSTALL_REPO $FAASR_TAG 
           Rscript -e "devtools::install_github('cboettig/minioclient'); library(minioclient); install_mc()"
+
       - name: Run the test
         run: |
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test[['register_workflow']](); Sys.sleep(10); test[['invoke_workflow']]()"
           Rscript -e "cli::cli_alert_info('testing...')"
           sleep 300
+          
       - name: Check the result
         run: |
           Rscript -e "minioclient::mc_cat('play/faasr-test/test/test.txt')"
