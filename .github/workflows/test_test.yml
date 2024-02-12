@@ -168,7 +168,7 @@ jobs:
       - name: Run the test
         run: |
           Rscript -e "test <- FaaSr::faasr('payload_new.json', 'env'); test[['register_workflow']](); Sys.sleep(10); test[['invoke_workflow']]()"
-          echo "testing..."
+          Rscript -e "cli::cli_alert_info('testing...')"
           sleep 300
       - name: Check the result
         run: |
