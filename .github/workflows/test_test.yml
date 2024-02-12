@@ -154,7 +154,7 @@ jobs:
   test-faasr:
     needs: get_payload
     runs-on: ubuntu-latest
-    container: spark77/testt
+    container: spark77/testtt
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
